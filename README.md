@@ -1,7 +1,7 @@
 
 <html lang="id" data-theme="dark">
 <head>
-  <meta charset="utf--8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Kuis Pilihan Ganda A–E</title>
   <style>
@@ -47,45 +47,18 @@
     html[data-theme="light"] .btn{background:#f1f5f9;color:#0b1221;border-color:#e2e8f0}
     html[data-theme="light"] .btn:hover{background: #e2e8f0;}
 
-    /* UPDATED: Select styling for better structure */
-    .select-wrapper {
-      position: relative;
-      display: inline-block;
-      vertical-align: middle;
-    }
-    .select-wrapper::after {
-      content: "▾";
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none;
-      color: var(--muted);
-    }
+    /* Select styling */
+    .select-wrapper { position: relative; display: inline-block; vertical-align: middle; }
+    .select-wrapper::after { content: "▾"; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--muted); }
     .select-wrapper select {
-      appearance: none;
-      -webkit-appearance: none;
-      background: #1f2937;
-      color: var(--ink);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 10px 40px 10px 14px;
-      cursor: pointer;
-      outline: none;
-      font: inherit;
-      transition: border-color .2s;
+      appearance: none; -webkit-appearance: none;
+      background: #1f2937; color: var(--ink); border: 1px solid var(--line);
+      border-radius: 12px; padding: 10px 40px 10px 14px; cursor: pointer; outline: none; font: inherit; transition: border-color .2s;
     }
-    .select-wrapper select:hover {
-        border-color: #3b82f6;
-    }
-    html[data-theme="light"] .select-wrapper select {
-      background: #f1f5f9;
-      color: #0b1221;
-      border-color: #e2e8f0;
-    }
+    .select-wrapper select:hover { border-color: #3b82f6; }
+    html[data-theme="light"] .select-wrapper select { background:#f1f5f9; color:#0b1221; border-color:#e2e8f0; }
 
     .label{font-size:13px;color:var(--muted);margin-right:6px}
-
     .mode-badge{border:1px solid var(--badge); color:var(--muted); padding:2px 8px; border-radius:999px; font-size:12px}
 
     .result{position:sticky;top:16px;background:var(--panel);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:12px;padding:16px;margin:24px 0; z-index: 10;}
@@ -120,22 +93,29 @@
     .status-ok{color:var(--ok);font-weight:700}
     .status-bad{color:var(--bad);font-weight:700}
     
-    .explanation-row td { border-top: none; padding-top: 0; padding-bottom: 12px; font-size: 13px; color: var(--muted); }
+    /* Default look for explanation rows */
+    .explanation-row td { border-top: none; padding-top: 0; padding-bottom: 12px; font-size: 13px; }
     html[data-theme="light"] .explanation-row { background: #f8fafc; }
     html[data-theme="dark"] .explanation-row { background: #111827; }
     .explanation-cell strong { color: var(--ink); }
 
     .foot{margin-top:24px;color:var(--muted);font-size:13px; text-align: center;}
 
-    /* NEW: Styling for the bottom grade button container */
-    .grade-container {
-      margin: 32px 0 24px 0;
-      text-align: center;
-    }
-    .grade-container .btn {
-      padding: 12px 32px;
-      font-size: 1.1rem;
-      font-weight: 700;
+    /* Bottom grade button container */
+    .grade-container { margin: 32px 0 24px 0; text-align: center; }
+    .grade-container .btn { padding: 12px 32px; font-size: 1.1rem; font-weight: 700; }
+
+    /* ===== EMPHASIS FOR EXPLANATIONS (REQUESTED):
+       Make explanation text BLACK & BOLD in both light and dark,
+       and give it a white background for clarity during grading. ===== */
+    html[data-theme="light"] .explanation-row,
+    html[data-theme="dark"] .explanation-row { background:#ffffff !important; }
+    .explanation-row td,
+    .explanation-cell,
+    .explanation-cell *,
+    .explanation-row td strong {
+      color:#000 !important;
+      font-weight:700 !important;
     }
   </style>
 </head>
@@ -148,7 +128,6 @@
       </div>
       <div class="controls">
         <label for="limitSelect" class="label">Jumlah Soal:</label>
-        <!-- UPDATED: Refactored select element for cleaner code -->
         <div class="select-wrapper">
           <select id="limitSelect">
             <option>10</option>
@@ -173,7 +152,6 @@
         <button class="btn ghost" id="shuffleQuestions" title="Acak urutan soal">Acak Soal</button>
         <button class="btn ghost" id="shuffleOptions" title="Toggle pengacakan opsi">Acak Opsi: <span id="optState">ON</span></button>
         <button class="btn" id="reset">Reset</button>
-        <!-- MOVED: The grade button is no longer here -->
       </div>
     </header>
 
@@ -188,7 +166,6 @@
 
     <form id="quiz" novalidate></form>
 
-    <!-- NEW: Button is now placed here, after the questions -->
     <div class="grade-container">
       <button class="btn primary" id="grade">Koreksi Jawaban</button>
     </div>
@@ -221,7 +198,7 @@
   </div>
 
   <script>
-    /* ================== DATA SOAL (UPDATED with full explanations) ================== */
+    /* ================== DATA SOAL (UPDATED with explanations) ================== */
     const DATA = `
 Abolisi artinya …|penegakan hukum|pengakuan|penghapusan, pembatalan|pelestarian|penghargaan|c|Menurut KBBI, abolisi adalah penghapusan peristiwa pidana.
 Abonemen artinya …|berlangganan|penghentian|penolakan|pemutusan kontrak|pelepasan|a|Abonemen berasal dari bahasa Belanda 'abonnement' yang berarti berlangganan.
@@ -381,7 +358,7 @@ Pedagogi artinya …|ilmu pengajaran, ilmu pendidikan|kebodohan|ketidaktahuan|ke
     const letters = ["a","b","c","d","e"];
     const THEME_KEY = 'quiz-theme';
     const LIMIT_KEY = 'quiz-limit';
-    const ANSWERS_KEY = 'quiz-answers'; // NEW: Key for storing answers
+    const ANSWERS_KEY = 'quiz-answers';
 
     /* ======= Parsing data ======= */
     function parseData(raw){
@@ -424,7 +401,7 @@ Pedagogi artinya …|ilmu pengajaran, ilmu pendidikan|kebodohan|ketidaktahuan|ke
       quiz.innerHTML = '';
       document.getElementById('total').textContent = String(state.limit);
       
-      const savedAnswers = JSON.parse(localStorage.getItem(ANSWERS_KEY) || '{}'); // NEW: Load answers
+      const savedAnswers = JSON.parse(localStorage.getItem(ANSWERS_KEY) || '{}');
 
       visibleIndices().forEach((qi, visibleIdx) => {
         const q = QUESTIONS[qi];
@@ -456,7 +433,6 @@ Pedagogi artinya …|ilmu pengajaran, ilmu pendidikan|kebodohan|ketidaktahuan|ke
           input.id=id;
           input.required = true;
 
-          // NEW: Check for saved answer and apply it
           if (savedAnswers[qi] === letter) {
             input.checked = true;
           }
@@ -578,12 +554,12 @@ Pedagogi artinya …|ilmu pengajaran, ilmu pendidikan|kebodohan|ketidaktahuan|ke
     }
 
     function resetAll() {
-      localStorage.removeItem(ANSWERS_KEY); // NEW: Clear saved answers
+      localStorage.removeItem(ANSWERS_KEY);
       render();
     }
 
     function shuffleQuestions() {
-      localStorage.removeItem(ANSWERS_KEY); // NEW: Clear saved answers
+      localStorage.removeItem(ANSWERS_KEY);
       state.order = shuffleArray(state.order);
       buildOptionOrders();
       render();
@@ -596,7 +572,7 @@ Pedagogi artinya …|ilmu pengajaran, ilmu pendidikan|kebodohan|ketidaktahuan|ke
       render();
     }
 
-    // NEW: Save selected answer to localStorage
+    // Save selected answers
     function handleAnswerChange(e) {
         if (e.target.tagName !== 'INPUT' || e.target.type !== 'radio') return;
         const answers = JSON.parse(localStorage.getItem(ANSWERS_KEY) || '{}');
@@ -624,7 +600,7 @@ Pedagogi artinya …|ilmu pengajaran, ilmu pendidikan|kebodohan|ketidaktahuan|ke
       const sel = document.getElementById('limitSelect');
       sel.value = String(state.limit);
       sel.addEventListener('change', (e)=>{
-        localStorage.removeItem(ANSWERS_KEY); // NEW: Clear saved answers on limit change
+        localStorage.removeItem(ANSWERS_KEY);
         state.limit = parseInt(e.target.value,10);
         localStorage.setItem(LIMIT_KEY, String(state.limit));
         render();
@@ -654,6 +630,3 @@ Pedagogi artinya …|ilmu pengajaran, ilmu pendidikan|kebodohan|ketidaktahuan|ke
   </script>
 </body>
 </html>
-
-
-# Sinonim1
